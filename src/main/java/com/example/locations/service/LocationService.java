@@ -1,6 +1,5 @@
 package com.example.locations.service;
 
-import com.example.locations.LocationsApplication;
 import com.example.locations.model.Location;
 import com.example.locations.repository.LocationRepository;
 import org.springframework.stereotype.Service;
@@ -26,10 +25,6 @@ public class LocationService {
 
     public Location create(Location location) {
         return repo.save(location);
-    }
-
-    public List<Location> findByName(String name) {
-        return repo.findByNameContainingIgnoreCase(name);
     }
 
     public void delete(UUID id) {
