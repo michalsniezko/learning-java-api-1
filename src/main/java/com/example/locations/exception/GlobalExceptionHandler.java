@@ -27,8 +27,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error ->
-                errors.put(error.getField(), error.getDefaultMessage())
+                errors.put(toSnakeCase(error.getField()), error.getDefaultMessage())
         );
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleIllegalState(IllegalStateException e) {
+        return ResponseEntity.internalServerError().body("Internal Server Error");
+    }
+
+    private String toSnakeCase(String camelCase) {
+        return camelCase.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
+    }
+
 }

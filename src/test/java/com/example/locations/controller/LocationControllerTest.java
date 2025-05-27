@@ -34,11 +34,11 @@ class LocationControllerTest {
     @Test
     void shouldReturnAllLocations() throws Exception {
         Location loc1 = new Location();
-        loc1.setName("Loc1");
-        loc1.setId(UUID.randomUUID());
+        loc1.setId("id1");
+        loc1.setUuid(UUID.randomUUID());
         Location loc2 = new Location();
-        loc2.setName("Loc2");
-        loc2.setId(UUID.randomUUID());
+        loc2.setId("id2");
+        loc2.setUuid(UUID.randomUUID());
 
         when(locationService.getAll()).thenReturn(List.of(loc1, loc2));
 
@@ -46,45 +46,42 @@ class LocationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].id").value(loc1.getId().toString()))
-                .andExpect(jsonPath("$[0].name").value("Loc1"))
-                .andExpect(jsonPath("$[1].name").value("Loc2"));
+                .andExpect(jsonPath("$[0].uuid").value(loc1.getUuid().toString()))
+                .andExpect(jsonPath("$[0].id").value("id1"))
+                .andExpect(jsonPath("$[1].id").value("id2"));
     }
 
     @Test
     void shouldReturnLocationById() throws Exception {
         UUID id = UUID.randomUUID();
         Location loc = new Location();
-        loc.setId(id);
-        loc.setName("MyLocation");
+        loc.setUuid(id);
+        loc.setId("id1");
 
         when(locationService.getById(id)).thenReturn(loc);
 
         mockMvc.perform(get("/api/locations/{id}", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id.toString()))
-                .andExpect(jsonPath("$.name").value("MyLocation"));
+                .andExpect(jsonPath("$.uuid").value(id.toString()))
+                .andExpect(jsonPath("$.id").value("id1"));
     }
 
     @Test
     void shouldCreateLocation() throws Exception {
-        Location toCreate = new Location();
-        toCreate.setName("NewLocation");
-        toCreate.setCountryCode("GB");
+        Location loc = new Location();
+        loc.setUuid(UUID.randomUUID());
+        loc.setId("test ID");
+        loc.setPartyId("ABC");
+        loc.setCountryCode("PL");
 
-        Location created = new Location();
-        created.setName("NewLocation");
-        created.setCountryCode("GB");
-        created.setId(UUID.randomUUID());
-
-        when(locationService.create(any(Location.class))).thenReturn(created);
+        when(locationService.create(any(Location.class))).thenReturn(loc);
 
         mockMvc.perform(post("/api/locations")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(toCreate)))
+                        .content(objectMapper.writeValueAsString(loc)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(created.getId().toString()))
-                .andExpect(jsonPath("$.name").value("NewLocation"));
+                .andExpect(jsonPath("$.uuid").value(loc.getUuid().toString()))
+                .andExpect(jsonPath("$.id").value(loc.getId()));
     }
 
     @Test

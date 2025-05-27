@@ -1,11 +1,16 @@
 package com.example.locations.model;
 
 import com.example.locations.validation.ValidCountryCode;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Immutable;
+import org.hibernate.validator.constraints.Length;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -14,11 +19,30 @@ import java.util.UUID;
 @Entity
 public class Location {
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID uuid = UUID.randomUUID();
 
-    @JsonProperty("country-code")
     @ValidCountryCode
     private String countryCode;
 
-    private String name;
+    @Length(max = 3, min = 3)
+    @NotEmpty
+    private String partyId;
+
+    @Immutable
+    @NotEmpty
+    @Length(max = 36)
+    private String id;
+
+    @NotNull
+    private Boolean publish = false;
+
+    @PrePersist
+    @PreUpdate
+    private void formatCountryCode() {
+        if (countryCode != null) {
+            countryCode = countryCode.toUpperCase();
+        } else {
+            throw new IllegalStateException("Country code must not be null or blank");
+        }
+    }
 }

@@ -22,12 +22,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LocationControllerIntegrationTest {
-
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private LocationRepository locationRepository;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -39,8 +39,9 @@ public class LocationControllerIntegrationTest {
     @Test
     void shouldCreateAndGetLocation() throws Exception {
         Map<String, Object> jsonMap = new HashMap<>();
-        jsonMap.put("name", "Test Location");
-        jsonMap.put("country-code", "PL");
+        jsonMap.put("id", "Test Location ID");
+        jsonMap.put("country_code", "PL");
+        jsonMap.put("party_id", "ABC");
 
         String json = objectMapper.writeValueAsString(jsonMap);
 
@@ -49,14 +50,14 @@ public class LocationControllerIntegrationTest {
                         .content(json))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.name").value("Test Location"));
+                .andExpect(jsonPath("$.country_code").value("PL"));
 
         Location savedLocation = locationRepository.findAll().getFirst();
 
-        mockMvc.perform(get("/api/locations/{id}", savedLocation.getId()))
+        mockMvc.perform(get("/api/locations/{id}", savedLocation.getUuid()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(savedLocation.getId().toString()))
-                .andExpect(jsonPath("$.name").value("Test Location"));
+                .andExpect(jsonPath("$.uuid").value(savedLocation.getUuid().toString()))
+                .andExpect(jsonPath("$.country_code").value("PL"));
     }
 
     @Test
@@ -70,14 +71,17 @@ public class LocationControllerIntegrationTest {
     @Test
     void shouldDeleteLocation() throws Exception {
         Location location = new Location();
-        location.setName("ToDelete");
+        location.setUuid(UUID.randomUUID());
         location.setCountryCode("GB");
+        location.setPartyId("ABC");
+        location.setId("SomeID");
+
         location = locationRepository.save(location);
 
-        mockMvc.perform(delete("/api/locations/{id}", location.getId()))
+        mockMvc.perform(delete("/api/locations/{id}", location.getUuid()))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(get("/api/locations/{id}", location.getId()))
+        mockMvc.perform(get("/api/locations/{id}", location.getUuid()))
                 .andExpect(status().isNotFound());
     }
 }
