@@ -73,6 +73,7 @@ class LocationControllerTest {
         loc.setId("test ID");
         loc.setPartyId("ABC");
         loc.setCountryCode("PL");
+        loc.setPublish(true);
 
         when(locationService.create(any(Location.class))).thenReturn(loc);
 

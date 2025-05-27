@@ -42,6 +42,8 @@ public class LocationControllerIntegrationTest {
         jsonMap.put("id", "Test Location ID");
         jsonMap.put("country_code", "PL");
         jsonMap.put("party_id", "ABC");
+        jsonMap.put("publish", true);
+
 
         String json = objectMapper.writeValueAsString(jsonMap);
 
@@ -75,6 +77,7 @@ public class LocationControllerIntegrationTest {
         location.setCountryCode("GB");
         location.setPartyId("ABC");
         location.setId("SomeID");
+        location.setPublish(true);
 
         location = locationRepository.save(location);
 

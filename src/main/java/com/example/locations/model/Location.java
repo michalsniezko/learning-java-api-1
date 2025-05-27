@@ -6,11 +6,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.validator.constraints.Length;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -34,7 +34,7 @@ public class Location {
     private String id;
 
     @NotNull
-    private Boolean publish = false;
+    private Boolean publish;
 
     @PrePersist
     @PreUpdate

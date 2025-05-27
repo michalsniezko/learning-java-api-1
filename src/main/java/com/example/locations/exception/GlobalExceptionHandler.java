@@ -33,12 +33,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<String> handleIllegalState(IllegalStateException e) {
+    public ResponseEntity<String> handleIllegalState(IllegalStateException ignored) {
         return ResponseEntity.internalServerError().body("Internal Server Error");
     }
 
     private String toSnakeCase(String camelCase) {
         return camelCase.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
     }
-
 }
