@@ -2,6 +2,7 @@ package com.example.locations.service;
 
 import com.example.locations.model.Location;
 import com.example.locations.repository.LocationRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,8 @@ public class LocationService {
     }
 
     public Location getById(UUID id) {
-        return repo.findById(id).orElseThrow();
+        return repo.findById(id).
+                orElseThrow(() -> new EntityNotFoundException("Location not found with id: " + id));
     }
 
     public Location create(Location location) {

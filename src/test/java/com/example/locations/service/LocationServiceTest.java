@@ -2,6 +2,7 @@ package com.example.locations.service;
 
 import com.example.locations.model.Location;
 import com.example.locations.repository.LocationRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -55,7 +55,7 @@ class LocationServiceTest {
         UUID id = UUID.randomUUID();
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> service.getById(id));
+        assertThrows(EntityNotFoundException.class, () -> service.getById(id));
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.example.locations.controller;
 import com.example.locations.model.Location;
 import com.example.locations.service.LocationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -93,6 +94,17 @@ class LocationControllerTest {
                 .andExpect(status().isOk());
 
         verify(locationService).delete(eq(id));
+    }
+
+    @Test
+    void getByIdShouldReturn404whenNotFound() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        when(locationService.getById(id)).thenThrow(new EntityNotFoundException("Location not found with id: " + id));
+
+        mockMvc.perform(get("/api/locations/{id}", id))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Location not found with id: " + id));
     }
 
 }
