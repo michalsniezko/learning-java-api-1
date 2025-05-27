@@ -2,6 +2,7 @@ package com.example.locations.controller;
 
 import com.example.locations.model.Location;
 import com.example.locations.service.LocationService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class LocationController {
     }
 
     @PostMapping
-    public Location create(@RequestBody Location location) {
+    public Location create(@Valid @RequestBody Location location) {
         return locationService.create(location);
     }
 

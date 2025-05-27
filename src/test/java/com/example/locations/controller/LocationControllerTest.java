@@ -70,8 +70,11 @@ class LocationControllerTest {
     void shouldCreateLocation() throws Exception {
         Location toCreate = new Location();
         toCreate.setName("NewLocation");
+        toCreate.setCountryCode("GB");
+
         Location created = new Location();
         created.setName("NewLocation");
+        created.setCountryCode("GB");
         created.setId(UUID.randomUUID());
 
         when(locationService.create(any(Location.class))).thenReturn(created);
@@ -106,5 +109,4 @@ class LocationControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Location not found with id: " + id));
     }
-
 }

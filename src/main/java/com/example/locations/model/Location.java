@@ -1,6 +1,9 @@
 package com.example.locations.model;
 
-import jakarta.persistence.*;
+import com.example.locations.validation.ValidCountryCode;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +15,10 @@ import java.util.UUID;
 public class Location {
     @Id
     private UUID id = UUID.randomUUID();
+
+    @JsonProperty("country-code")
+    @ValidCountryCode
+    private String countryCode;
+
     private String name;
-    private String address;
-    private String city;
-    private double latitude;
-    private double longitude;
 }

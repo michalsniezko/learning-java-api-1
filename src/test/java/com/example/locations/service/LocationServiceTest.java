@@ -62,10 +62,6 @@ class LocationServiceTest {
     void create() {
         Location location = new Location();
         location.setName("Test Name");
-        location.setAddress("Test Address");
-        location.setCity("Test City");
-        location.setLatitude(50.0);
-        location.setLongitude(20.0);
 
         when(repository.save(location)).thenReturn(location);
 
@@ -73,8 +69,6 @@ class LocationServiceTest {
 
         assertNotNull(result);
         assertEquals("Test Name", result.getName());
-        assertEquals("Test Address", result.getAddress());
-        assertEquals("Test City", result.getCity());
         verify(repository, times(1)).save(location);
     }
 
