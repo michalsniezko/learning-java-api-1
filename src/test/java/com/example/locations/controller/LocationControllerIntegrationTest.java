@@ -44,7 +44,6 @@ public class LocationControllerIntegrationTest {
         jsonMap.put("party_id", "ABC");
         jsonMap.put("publish", true);
 
-
         String json = objectMapper.writeValueAsString(jsonMap);
 
         mockMvc.perform(post("/api/locations")
