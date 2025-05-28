@@ -27,7 +27,7 @@ public class LocationLoader implements CommandLineRunner {
         }
     }
 
-    public Location generateLocation() {
+    private Location generateLocation() {
         Location loc = new Location();
         loc.setUuid(UUID.randomUUID());
         loc.setCountryCode(faker.country().countryCode2().toUpperCase());
