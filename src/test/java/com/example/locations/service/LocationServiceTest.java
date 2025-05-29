@@ -37,14 +37,14 @@ class LocationServiceTest {
     @Test
     void getById() {
         Location location = new Location();
-        UUID uuid = location.getUuid();
+        UUID uuid = location.getId();
 
         when(repository.findById(uuid)).thenReturn(Optional.of(location));
 
         Location result = service.getById(uuid);
 
         assertNotNull(result);
-        assertEquals(location.getUuid(), result.getUuid());
+        assertEquals(location.getId(), result.getId());
     }
 
     @Test
@@ -64,7 +64,7 @@ class LocationServiceTest {
         Location result = service.create(location);
 
         assertNotNull(result);
-        assertEquals(location.getUuid(), result.getUuid());
+        assertEquals(location.getId(), result.getId());
         verify(repository, times(1)).save(location);
     }
 

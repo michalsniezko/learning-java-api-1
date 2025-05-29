@@ -39,7 +39,6 @@ public class LocationControllerIntegrationTest {
     @Test
     void shouldCreateAndGetLocation() throws Exception {
         Map<String, Object> jsonMap = new HashMap<>();
-        jsonMap.put("id", "Test Location ID");
         jsonMap.put("country_code", "PL");
         jsonMap.put("party_id", "ABC");
         jsonMap.put("publish", true);
@@ -55,9 +54,9 @@ public class LocationControllerIntegrationTest {
 
         Location savedLocation = locationRepository.findAll().getFirst();
 
-        mockMvc.perform(get("/api/locations/{id}", savedLocation.getUuid()))
+        mockMvc.perform(get("/api/locations/{id}", savedLocation.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.uuid").value(savedLocation.getUuid().toString()))
+                .andExpect(jsonPath("$.id").value(savedLocation.getId().toString()))
                 .andExpect(jsonPath("$.country_code").value("PL"));
     }
 
@@ -72,18 +71,16 @@ public class LocationControllerIntegrationTest {
     @Test
     void shouldDeleteLocation() throws Exception {
         Location location = new Location();
-        location.setUuid(UUID.randomUUID());
         location.setCountryCode("GB");
         location.setPartyId("ABC");
-        location.setId("SomeID");
         location.setPublish(true);
 
         location = locationRepository.save(location);
 
-        mockMvc.perform(delete("/api/locations/{id}", location.getUuid()))
+        mockMvc.perform(delete("/api/locations/{id}", location.getId()))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(get("/api/locations/{id}", location.getUuid()))
+        mockMvc.perform(get("/api/locations/{id}", location.getId()))
                 .andExpect(status().isNotFound());
     }
 }
