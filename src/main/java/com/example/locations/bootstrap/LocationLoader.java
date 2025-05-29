@@ -3,6 +3,7 @@ package com.example.locations.bootstrap;
 import com.example.locations.model.Location;
 import com.example.locations.repository.LocationRepository;
 import com.github.javafaker.Faker;
+import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @Component
 @Profile({"dev", "test"})
+@Transactional
 public class LocationLoader implements CommandLineRunner {
     private final LocationRepository locationRepository;
     private final Faker faker = new Faker();
@@ -22,6 +24,8 @@ public class LocationLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        if (locationRepository.count() > 0) return;
+
         for (int i = 0; i < 10; i++) {
             locationRepository.save(generateLocation());
         }
