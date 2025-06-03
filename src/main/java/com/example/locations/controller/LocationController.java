@@ -3,6 +3,7 @@ package com.example.locations.controller;
 import com.example.locations.model.Location;
 import com.example.locations.service.LocationService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/locations")
+@PreAuthorize("hasRole('USER')")
 public class LocationController {
     private final LocationService locationService;
 

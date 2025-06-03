@@ -31,7 +31,6 @@ public class LocationLoader implements CommandLineRunner {
     }
 
     private Location generateLocation() {
-
         return Location.builder().
                 countryCode(faker.country().countryCode2().toUpperCase()).
                 partyId(faker.letterify("???").toUpperCase()).

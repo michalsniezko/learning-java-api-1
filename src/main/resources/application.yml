@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/locations_db
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  application:
+    name: locations
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  web:
+    locale: en_EN
+    locale-resolver: fixed
+
+  profiles:
+    active: dev
+
+  app:
+    jwtSecret: 8a86770cc47a12996ec863be06c7a19ce8b3b77d81088bec153800a86e7fd7906f28a9abd86a0bc7100f7350e95110527bd6b01469142ba269dcba54a16df99655ae046479f79888125594c2cc095d627063fcecb37f41f4e8b8e8ae56fd18333852327992a7706205dc8b5e03d3f42b0894db657f916cffa03037c15992d9820e7cfa83c2008dba20f96a61ab559ee795b428390b9dd6102e1139eb1a82f2604bf71f71dc0b400a5c7e196f766f0186a90863a25b21a2fe01dc609e85f6d7d5b4d1eb40545807df42a198eeb64b206316d4860576d31790375551b50e3164bcaa9924c366c99e635f6b44faacd74f9ecd5c4e17cb5973ee36311aa20ae18ef0
+    jwtExpirationMs: 86400000
+
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 8080
