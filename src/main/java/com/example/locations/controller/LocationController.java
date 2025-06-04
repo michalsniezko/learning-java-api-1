@@ -19,17 +19,17 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Location> getAll() {
         return locationService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public Location getById(@PathVariable UUID id) {
         return locationService.getById(id);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public Location create(@Valid @RequestBody Location location) {
         return locationService.create(location);
     }
