@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
@@ -37,6 +38,7 @@ public class LocationControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "user")
     void shouldCreateAndGetLocation() throws Exception {
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("country_code", "PL");
@@ -61,6 +63,7 @@ public class LocationControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "user")
     void shouldReturn404WhenLocationNotFound() throws Exception {
         UUID randomId = UUID.randomUUID();
 
@@ -69,6 +72,7 @@ public class LocationControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "user")
     void shouldDeleteLocation() throws Exception {
         Location location = new Location();
         location.setCountryCode("GB");

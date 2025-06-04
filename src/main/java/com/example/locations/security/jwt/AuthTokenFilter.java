@@ -48,10 +48,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 logger.debug("Roles from JWT: {}", userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                
+                System.out.println("Authorities from userDetails: " + userDetails.getAuthorities());
+
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication {}", e.getMessage());
         }
+
 
         filterChain.doFilter(request, response);
     }

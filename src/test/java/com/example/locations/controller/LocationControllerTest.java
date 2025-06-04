@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -16,12 +17,12 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(LocationController.class)
 class LocationControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -32,6 +33,7 @@ class LocationControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithMockUser(username = "user")
     void shouldReturnAllLocations() throws Exception {
         Location loc1 = new Location();
         loc1.setId(UUID.randomUUID());
@@ -48,6 +50,7 @@ class LocationControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user")
     void shouldReturnLocationById() throws Exception {
         UUID id = UUID.randomUUID();
         Location loc = new Location();
@@ -61,6 +64,7 @@ class LocationControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user")
     void shouldCreateLocation() throws Exception {
         Location loc = new Location();
         loc.setId(UUID.randomUUID());
@@ -70,7 +74,7 @@ class LocationControllerTest {
 
         when(locationService.create(any(Location.class))).thenReturn(loc);
 
-        mockMvc.perform(post("/api/locations")
+        mockMvc.perform(post("/api/locations").with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loc)))
                 .andExpect(status().isOk())
@@ -78,18 +82,20 @@ class LocationControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user")
     void shouldDeleteLocation() throws Exception {
         UUID id = UUID.randomUUID();
 
         doNothing().when(locationService).delete(id);
 
-        mockMvc.perform(delete("/api/locations/{id}", id))
+        mockMvc.perform(delete("/api/locations/{id}", id).with(csrf()))
                 .andExpect(status().isOk());
 
         verify(locationService).delete(eq(id));
     }
 
     @Test
+    @WithMockUser(username = "user")
     void getByIdShouldReturn404whenNotFound() throws Exception {
         UUID id = UUID.randomUUID();
 
