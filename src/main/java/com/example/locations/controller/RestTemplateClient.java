@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class RestClient {
+public class RestTemplateClient {
     private final static String GET_ALL_LOCATIONS_API = "http://localhost:8080/api/locations";
     static RestTemplate restTemplate = new RestTemplate();
 
@@ -53,5 +53,4 @@ public class RestClient {
 
         return jsonNode.get("jwt_token").asText();
     }
-
 }
