@@ -3,13 +3,13 @@ package com.example.locations.controller;
 import com.example.locations.model.Location;
 import com.example.locations.repository.LocationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class LocationControllerMockMvcTest {
     @Autowired
     private MockMvc mockMvc;
@@ -31,11 +32,6 @@ public class LocationControllerMockMvcTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @BeforeEach
-    void cleanDb() {
-        locationRepository.deleteAll();
-    }
 
     @Test
     @WithMockUser(username = "user")

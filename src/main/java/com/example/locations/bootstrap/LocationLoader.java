@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Random;
 
 @Component
-@Profile({"dev", "test"})
+@Profile("dev")
 @Transactional
 public class LocationLoader implements CommandLineRunner {
     private final LocationRepository locationRepository;
